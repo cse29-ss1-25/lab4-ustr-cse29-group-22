@@ -39,6 +39,50 @@ Returns an empty string on invalid range.
 UStr substring(UStr s, int32_t start, int32_t end) {
 	// TODO: implement this
 
+	if (start < 0 || end > len(s) || start >= end) { return new_ustr(""); }
+
+	int index = 0;
+        const char* p = s.contents;	
+	const char* start_byte = NULL;
+	const char* end_byte = NULL; 
+
+	while (index < end && *p != '\0') {
+		if (index == start) {
+			start_byte = p; 
+		}
+
+		char c = *p; 
+		int codepoint_len = 1; 
+
+		if ((c & 0b11000000) == 0) { codepoint_len = 1; }
+		else if ((c & 0b11100000) == 0b11000000) { codepoint_len = 2; }
+		else if ((c & 0b11110000) == 0b11100000) { codepoint_len = 3; }
+		else if ((c & 0b11111000) == 0b11110000) { codepoint_len = 4; }
+
+		p += codepoint_len;
+	        index++;
+
+		if (index == end) {
+			end_byte = p; 
+		}	
+	}
+
+	int sub_len = end_byte - start_byte;
+	char* sub_str = malloc(sub_len + 1);
+
+	for (int i = 0; i < sub_len; i++) {
+		sub_str[i] = start_byte[i]; 
+	}	
+       
+	sub_str[sub_len] = '\0';
+
+	UStr result = new_ustr(sub_str); 
+
+	free(sub_str); 
+
+	return result; 
+
+
 }
 
 /*
