@@ -1,17 +1,20 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "ustr.h"
 
 int main() {
-    char input[256];
-    while(fgets(input, sizeof(input), stdin)) {
-        // Remove newline character if present
-        size_t l = strlen(input);
-        if (l > 0 && input[l - 1] == '\n') {
-            input[l - 1] = '\0';
-        }
+    char input[1024];
+
+    while (fgets(input, sizeof(input), stdin) != NULL) {
+        input[strcspn(input, "\n")] = 0;
 
         UStr s = new_ustr(input);
-        printf("len(%s) = %d\n", s.contents, len(s));
+        printf("Length: %d\n", len(s));
+
+        free_ustr(s);
     }
+
+    return 0;
 }
+

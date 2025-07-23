@@ -3,12 +3,10 @@
 
 #include <stdint.h>
 
-int32_t utf8_strlen(char str[]);
-uint8_t is_ascii(char str[]);
-uint8_t is_continuation_byte(unsigned char byte);
-int8_t utf8_codepoint_size(char c);
-int32_t cpi_of_bi(char str[], int32_t byte_index);
-int32_t bi_of_cpi(char str[], int32_t codepoint_index);
+int get_codepoint_len(const char* utf8_char);
+uint32_t get_codepoint_from_bytes(const char* bytes);
+void get_bytes_from_codepoint(uint32_t codepoint, char* buffer);
+int utf8_strlen(const char* s);
 
+#endif // PSET1_H
 
-#endif
